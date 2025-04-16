@@ -1,99 +1,27 @@
-// class Solution {
-
-//     public void zeros(int[][] matrix, int i, int j){
-//         int r = matrix.length;
-//         int c = matrix[0].length;
-//         for(int k=0;k<c;k++){
-//             matrix[i][k] =0;
-//         }
-//         for(int k=0; k<r;k++){
-//             matrix[k][j] = 0;
-//         }
-//     }
-//     public void setZeroes(int[][] matrix) {
-//        int r = matrix.length;
-//        int c = matrix[0].length;
-//        Stack<Integer> a = new Stack<Integer>();
-//        for(int i=0;i<r;i++){
-//         for(int j=0;j<c;j++){
-//             if(matrix[i][j] == 0){
-//                 a.add(i);
-//                 a.add(j);
-//             }
-//         }
-//        }
-//         while(a.size()>0){
-//            int y = a.pop();
-//            int x = a.pop();
-//            System.out.println(x);
-//            zeros(matrix, x,y);
-//         }
-//        }
-// }
 class Solution {
     public void setZeroes(int[][] matrix) {
-        int rows = matrix.length;
-        int cols = matrix[0].length;
+        int rows = matrix.length, cols = matrix[0].length;
+        List<Pair<Integer, Integer>> zeroPositions = new ArrayList<>();
 
-        boolean firstRowHasZero = false;
-        boolean firstColHasZero = false;
-
-        // Check if the first row contains zero
-        for (int c = 0; c < cols; c++) {
-            if (matrix[0][c] == 0) {
-                firstRowHasZero = true;
-                break;
-            }
-        }
-
-        // Check if the first column contains zero
-        for (int r = 0; r < rows; r++) {
-            if (matrix[r][0] == 0) {
-                firstColHasZero = true;
-                break;
-            }
-        }
-
-        // Use the first row and column as markers
-        for (int r = 1; r < rows; r++) {
-            for (int c = 1; c < cols; c++) {
-                if (matrix[r][c] == 0) {
-                    matrix[r][0] = 0;
-                    matrix[0][c] = 0;
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (matrix[row][col] == 0) {
+                    zeroPositions.add(new Pair<Integer, Integer>(row, col));
                 }
             }
         }
 
-        // Set the marked rows to zero
-        for (int r = 1; r < rows; r++) {
-            if (matrix[r][0] == 0) {
-                for (int c = 1; c < cols; c++) {
-                    matrix[r][c] = 0;
-                }
+        for (Pair<Integer, Integer> positions : zeroPositions) {
+            int row = positions.getKey();
+            int col = positions.getValue();
+
+            for (int x = 0; x < cols; x++) {
+                matrix[row][x] = 0;
+            }
+
+            for (int y = 0; y < rows; y++) {
+                matrix[y][col] = 0;
             }
         }
-
-        // Set the marked columns to zero
-        for (int c = 1; c < cols; c++) {
-            if (matrix[0][c] == 0) {
-                for (int r = 1; r < rows; r++) {
-                    matrix[r][c] = 0;
-                }
-            }
-        }
-
-        // Set the first row to zero if needed
-        if (firstRowHasZero) {
-            for (int c = 0; c < cols; c++) {
-                matrix[0][c] = 0;
-            }
-        }
-
-        // Set the first column to zero if needed
-        if (firstColHasZero) {
-            for (int r = 0; r < rows; r++) {
-                matrix[r][0] = 0;
-            }
-        }        
     }
 }
